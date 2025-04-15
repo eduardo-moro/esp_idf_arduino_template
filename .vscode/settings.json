@@ -1,0 +1,15 @@
+{
+    "idf.portWin": "COM3",
+    "files.associations": {
+        "adafruit_st7789.h": "c",
+        "algorithm": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp",
+        "random": "cpp",
+        "utility": "cpp",
+        "xutility": "cpp"
+    },
+    "idf.espIdfPathWin": "C:\\Users\\eduar\\esp\\v5.3\\esp-idf",
+    "idf.toolsPathWin": "C:\\Users\\eduar\\.espressif",
+    "idf.pythonInstallPath": "C:\\Users\\eduar\\.espressif\\tools\\idf-python\\3.11.2\\python.exe"
+}
