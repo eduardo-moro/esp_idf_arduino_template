@@ -7,9 +7,12 @@
         "limits": "cpp",
         "random": "cpp",
         "utility": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "ios": "cpp",
+        "*.rh": "cpp"
     },
     "idf.espIdfPathWin": "C:\\Users\\eduar\\esp\\v5.3\\esp-idf",
     "idf.toolsPathWin": "C:\\Users\\eduar\\.espressif",
-    "idf.pythonInstallPath": "C:\\Users\\eduar\\.espressif\\tools\\idf-python\\3.11.2\\python.exe"
+    "idf.pythonInstallPath": "C:\\Users\\eduar\\.espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "C_Cpp.errorSquiggles": "disabled"
 }

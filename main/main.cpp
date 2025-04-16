@@ -1,43 +1,58 @@
-#include <Arduino.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_ST7789.h>
-#include <SPI.h>
+// test of tft_espi and the rest of project configuration
 
-// TFT display pin definition
-#define TFT_DC  2
-#define TFT_RST 4
-#define TFT_CS  5
+#include <TFT_eSPI.h>
 
-// TFT display configuration
-#define TFT_WIDTH 280
-#define TFT_HEIGHT 240
-#define TFT_ROTATION 1
-#define BRIGHTNESS_PIN 22
+TFT_eSPI tft = TFT_eSPI();
+TFT_eSprite sprite = TFT_eSprite(&tft);
 
-// Create display object
-Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
+const int lineHeight = 16;
+const int maxLines = 50;
+String lines[maxLines];
+const int visibleLines = 240 / lineHeight;
+int scrollSpeed = 5;
 
-void setup() {
+extern "C" void app_main(void) {
   Serial.begin(115200);
-  
-  // Initialize display
-  tft.init(TFT_HEIGHT, TFT_WIDTH);
-  tft.setRotation(TFT_ROTATION);
-  tft.fillScreen(ST77XX_BLACK);
-  analogWrite(BRIGHTNESS_PIN, 100);
-  
-  // Print "Hello World" in center
-  tft.setTextColor(ST77XX_WHITE);
-  tft.setTextSize(3);
-  
-  int16_t x, y;
-  uint16_t w, h;
-  tft.getTextBounds("Hello World", 0, 0, &x, &y, &w, &h);
-  
-  tft.setCursor((TFT_WIDTH - w) / 2, (TFT_HEIGHT - h) / 2);
-  tft.print("Hello World");
-}
+  tft.init();
+  tft.setRotation(3);
+  tft.fillScreen(TFT_BLACK);
+  pinMode(22, OUTPUT);
+  digitalWrite(22, HIGH);
 
-void loop() {
-  // Nothing to do here
+  sprite.createSprite(tft.width(), tft.height());
+  sprite.setSwapBytes(true);
+  sprite.setTextColor(TFT_GREEN, TFT_BLACK);
+
+  for (int i = 0; i < maxLines; i++) {
+    lines[i] = String(50 - i);
+  }
+
+  int yOffset = 0;
+  int scrollPos = 0;
+
+  while (true) {
+    sprite.fillSprite(TFT_BLACK);
+
+    yOffset -= scrollSpeed;
+    if (yOffset <= -lineHeight) {
+      yOffset += lineHeight;
+      scrollPos = (scrollPos + 1) % maxLines;
+    }
+
+    for (int i = 0; i < visibleLines + 2; i++) {
+      int lineIndex = (scrollPos + i) % maxLines;
+      int yPosition = i * lineHeight + yOffset;
+      
+      if (yPosition > -lineHeight && yPosition < tft.height()) {
+        String text = lines[lineIndex];
+        int textWidth = sprite.textWidth(text);
+        int xPosition = (tft.width() - textWidth) / 2;
+        
+        sprite.drawString(text, xPosition, yPosition);
+      }
+    }
+
+    sprite.pushSprite(0, 0);
+    vTaskDelay(pdMS_TO_TICKS((10 - scrollSpeed % 10) * 10));
+  }
 }

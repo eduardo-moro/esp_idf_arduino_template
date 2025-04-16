@@ -3,18 +3,8 @@ idf_component_register(
         "main.cpp"
     INCLUDE_DIRS
         "."
-        "../lib/QRcodeDisplay/src"
-        "../lib/PubSubClient/src"
-        "../lib/Adafruit_GFX_Library"
-        "../lib/Adafruit_BusIO"
-        "../lib/Adafruit_ST7789"
-        "../lib/Adafruit_ST77xx"
-        "../lib/qrcode_st7789"
     REQUIRES
-        arduino
-        Adafruit_BusIO
-        Adafruit_GFX_Library
-        PubSubClient
-        QRcodeDisplay
-        mbedtls
+        TFT_eSPI
+        driver
+        freertos
 )
