@@ -1,3 +1,3 @@
 [submodule "components/TFT_eSPI"]
 	path = components/TFT_eSPI
-	url = git@github.com:Bodmer/TFT_eSPI.git
+	url = https://github.com/eduardo-moro/TFT_eSPI-st7789.git
